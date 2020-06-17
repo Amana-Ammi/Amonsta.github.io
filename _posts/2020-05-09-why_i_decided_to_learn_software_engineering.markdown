@@ -1,7 +1,7 @@
 ---
 layout: post
 title:      "Why I Decided To Learn Software Engineering"
-date:       2020-05-09 17:34:41 +0000
+date:       2020-05-09 13:34:42 -0400
 permalink:  why_i_decided_to_learn_software_engineering
 ---
 
@@ -11,4 +11,4 @@ If I reflect on 10 years ago, I was 18 and going straight into higher education 
 
 Fast forward to 2020, I've been working as security for concert venues for about 4 years now. I even do work at Coachella every year. To supplement income I also work as a delivery driver. 
 
-Although, music is a huge part of my life, I’d rather enjoy it on a different and much safer scale.'m learning Software Engineering because I want to take control of my life and my career. Building and creating are defining pieces of myself that I wish to mold into something greater. I embrace the challenges as well as the small victories, because they matter too. Here's to my journey!
+Although, music is a huge part of my life, I’d rather enjoy it on a different and much safer scale. I'm learning Software Engineering because I want to take control of my life and my career. Building and creating are defining pieces of myself that I wish to mold into something greater. I embrace the challenges as well as the small victories, because they matter too. Here's to my journey!
