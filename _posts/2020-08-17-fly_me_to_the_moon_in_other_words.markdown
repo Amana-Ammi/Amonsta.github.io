@@ -1,7 +1,7 @@
 ---
 layout: post
 title:      "Fly Me To The Moon(In Other Words)"
-date:       2020-08-17 04:54:56 +0000
+date:       2020-08-17 00:54:57 -0400
 permalink:  fly_me_to_the_moon_in_other_words
 ---
 
@@ -27,13 +27,55 @@ What I've come to realize during this Sinatra journey is that a website just isn
 Using this principle, I created two separate files to hold my User and Client's create actions. A `user_controller.rb` and a `clients_controller.rb`. It's also important to note my association between the two. A User `has_many :clients` and a Client `belongs_to :user`. 
 
 
-Within my 
+Within my user_controller, I created a `GET` request to render a signup form that I created in a Views folder titled "Users". After rendering my form, I needed to create a `POST` request in order to actually "create" my user. Those actions looked like this;
+
+```
+class UserController < ApplicationController
+
+    #Renders sign up form
+		
+    get '/users/signup' do 
+        erb :'/users/signup'
+    end 
+   
+    #creates the user, logs them in/starts session,
+    #redirect to user homepage
+		
+    post '/users/signup' do 
+		
+        #prevents user signup w/bad data
+				
+        if params[:name] == "" && params[:email] == "" && params[:password] == ""
+            redirect '/users/signup'
+        else
+            @user = User.create(
+                name: params[:name],
+                email: params[:email],
+                password: params[:password]
+            )
+            session[:user_id] = @user.id
+            redirect "/users/#{@user.id}"
+        end
+    end
+```
+
+The actions for creating a new client were almost identical. The main changes lie in the View file rendered and the params data that I wanted to create for each Client.
 
 READ
 
+The reading action is easily understood as the user ability to view the data they have created. Take our clients for example. It wouldn't make much sense to manage your clients within an app if you could never go back and see those clients. 
+
+For my application, the user has a few places where they can see clients. They are able to see the individual client's information immediately after creation. They are also able to view an index of all created clients via an index route ('/clients'). These are two separate routes that render two different view files. 
+
+
+
 UPDATE
 
+For now, the main way I implemented the Update action is through the Clients Controller. As a tattoo artist and honestly, anyone who deals with customers, we know things change often. Dates change, addresses change, ideas change, etc. It's life. Also a very important feature that my Sinatra Application needed. Again, I have the action of rendering my edit form from a view file. 
+
 DELETE
+
+Just as the word implies, this action will delete the requested inforation. The delete request however does not need it's own view file nor does it use a GET, POST or PATCH request. It uses a, simply put, DELETE request.
 
 In other words... it's really just English.
 
