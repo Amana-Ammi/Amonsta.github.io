@@ -38,12 +38,8 @@ class UserController < ApplicationController
         erb :'/users/signup'
     end 
    
-    #creates the user, logs them in/starts session,
-    #redirect to user homepage
 		
     post '/users/signup' do 
-		
-        #prevents user signup w/bad data
 				
         if params[:name] == "" && params[:email] == "" && params[:password] == ""
             redirect '/users/signup'
@@ -65,18 +61,71 @@ READ
 
 The reading action is easily understood as the user ability to view the data they have created. Take our clients for example. It wouldn't make much sense to manage your clients within an app if you could never go back and see those clients. 
 
-For my application, the user has a few places where they can see clients. They are able to see the individual client's information immediately after creation. They are also able to view an index of all created clients via an index route ('/clients'). These are two separate routes that render two different view files. 
+For my application, the user has a few places where they can see clients. They are able to see the individual client's information immediately after creation and they are also able to view an index of all created clients via an index route ('/clients'). These are two separate routes that render two different view files. 
 
+The index route, '/clients', was built simply like this:
 
+```
+get '/clients' do
+        if logged_in?
+            @clients = Client.all
+            erb :'/clients/index'
+        else
+            erb :welcome
+        end
+    end
+```
+
+Within the embedded Ruby file (erb :'clients/index'), I didn't crate a form like in the previous CRUD action. Instead, I just iterated through the Client.all method using plain ole Ruby.
 
 UPDATE
 
 For now, the main way I implemented the Update action is through the Clients Controller. As a tattoo artist and honestly, anyone who deals with customers, we know things change often. Dates change, addresses change, ideas change, etc. It's life. Also a very important feature that my Sinatra Application needed. Again, I have the action of rendering my edit form from a view file. 
 
+Then, instead of a 'post' action, I have to implement 'patch'. The 'post' action in my application "creates" an client, whereas the "patch" action modies a client. 
+
+```
+patch '/clients/:id' do
+        find_client
+        if params != ""
+            @client.update(
+                first_name: params[:first_name],
+                last_name: params[:last_name],
+                description: params[:description],
+                location: params[:location],
+                price: params[:price],
+                appt_date: params[:appt_date],
+            )
+            redirect "/clients/#{@client.id}"
+        else
+            redirect "/clients"
+        end
+    end
+```
+
+All together, this reads like;
+
+"First, we need to find the client that needs to have informationation changed. (find_client is  a helper method I created to do just that, find the client). Then, if the update form isn't blank, let's go ahead and update our listed values then send them back to the individual client page that now has the updated information. However, if the update form was made blank, let's take the user back to the index page where they'll see no changes were made to that client."
+
 DELETE
 
-Just as the word implies, this action will delete the requested inforation. The delete request however does not need it's own view file nor does it use a GET, POST or PATCH request. It uses a, simply put, DELETE request.
+Just as the word implies, this action will delete the requested information. The delete request however does not need it's own view file nor does it use a GET, POST or PATCH request. It uses a, simply put, DELETE request.
 
-In other words... it's really just English.
+```
+delete '/clients/:id' do 
+        find_client
+        if authorized?(@client)
+            @client.destroy
+            redirect '/clients'
+        else
+            redirect "/users/#{current_user.id}"
+        end
+    end
+```
+
+An important thing to note with Delete and Patch requests is that they are only possible if I update my config.ru file with the line `use Rack::MethodOverride` This along with some additional coding in our View files, allows for our objects to be overridden.
+
+
+In other words, it reads like english.
 
 
