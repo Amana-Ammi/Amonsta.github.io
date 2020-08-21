@@ -126,6 +126,6 @@ delete '/clients/:id' do
 An important thing to note with Delete and Patch requests is that they are only possible if I update my config.ru file with the line `use Rack::MethodOverride` This along with some additional coding in our View files, allows for our objects to be overridden.
 
 
-In other words, it reads like english.
+In other words, it reads just like english.
 
 
